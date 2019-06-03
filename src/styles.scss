@@ -1,0 +1,59 @@
+@import './variables.scss';
+
+body {
+  font-family: 'Roboto', sans-serif;
+  width: 100vw;
+  height: 100vh;
+}
+
+.col-primary {
+  color: $primary-color;
+}
+
+.col-primary-dark {
+  color: $primary-color-dark;
+}
+
+.col-primary-extra-dark {
+  color: $primary-color-extra-dark;
+}
+
+.btn {
+  padding: 14px 24px;
+  border: 0 none;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.btn:focus, .btn:active:focus, .btn.active:focus {
+  outline: 0 none !important;
+}
+
+.main-btn {
+  background-color: $primary-color;
+  color: #ffffff;
+  transition: all 0.5s;
+}
+
+.main-btn:hover, .main-btn:focus, .main-btn:active {
+  outline: none !important;
+  background-color: $primary-color-dark;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.page-wrap {
+  min-height: 100vh;
+}
+
+.navbar {
+  background: $primary-color-extra-dark;
+  color: white;
+  a {
+    color: white;
+    &:hover {
+      color: lighten($primary-color, 20%);
+    }
+  }
+}
