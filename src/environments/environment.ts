@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://smartcast.tk/api'
+  baseUrl: 'http://localhost:9090/api',
+  sendCookies: true
 };
 
 /*

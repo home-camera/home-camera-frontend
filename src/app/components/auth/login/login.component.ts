@@ -12,15 +12,15 @@ import { AuthService } from '../../../services/auth/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  private form:FormGroup;
+  public form:FormGroup;
 
   ngOnInit() {
   }
 
-  constructor(private fb:FormBuilder, 
-              private authService: AuthService, 
+  constructor(private fb:FormBuilder,
+              private authService: AuthService,
               private router: Router) {
-    
+
     this.form = this.fb.group({
       email: ['',Validators.required],
       password: ['',Validators.required]
@@ -32,7 +32,30 @@ export class LoginComponent implements OnInit {
 
     if (val.email && val.password) {
       this.authService.login(val.email, val.password)
-        .subscribe();
+        .subscribe((res) => {
+          //console.log('logged successfully');
+          this.authService.currentUser().subscribe((ress) => {
+            console.log(ress.body);
+          },
+          erre => console.log(erre));
+        },
+        err => this.loginErrorCatcher(err));
+    }
+  }
+
+  private loginErrorCatcher(err) {
+    // 400:
+    //   - Bad request (no email or password)
+    // 401:
+    //   - Invalid credentials
+
+    switch(err.status) {
+      case 400:
+        alert('richiesta invalida');
+        break;
+      case 401:
+        alert('credenziali errate');
+        break;
     }
   }
 }
