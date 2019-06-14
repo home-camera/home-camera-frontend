@@ -17,6 +17,7 @@ import { AlertService } from './services/layouts/alert.service';
 import { HomeComponent } from './components/layouts/home/home.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LogoutComponent } from './components/auth/logout/logout.component';
+import { RecordingComponent } from './components/recording/recording/recording.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { LogoutComponent } from './components/auth/logout/logout.component';
     NavbarComponent,
     AlertComponent,
     HomeComponent,
-    LogoutComponent
+    LogoutComponent,
+    RecordingComponent
   ],
   imports: [
     BrowserModule,
