@@ -6,6 +6,11 @@ body {
   height: 100vh;
 }
 
+.spacer {
+  position: fixed;
+  margin: 10px;
+}
+
 .col-primary {
   color: $primary-color;
 }

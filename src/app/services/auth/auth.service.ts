@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 import { environment } from '../../../environments/environment';
 
@@ -8,29 +9,36 @@ import { environment } from '../../../environments/environment';
 })
 export class AuthService {
 
+  private options = { responseType: 'text' as 'json', observe: 'response' as 'response' };
   private baseUrl: string = environment.baseUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   login(email:string, password:string) {
-    return this.http.post(this.baseUrl + '/auth/login', { email: email, password: password }, { responseType: 'text', observe: 'response' as 'response' });
+    return this.http.post(this.baseUrl + '/auth/login', { email: email, password: password }, this.options);
   }
 
   currentUser() {
-    return this.http.get(this.baseUrl + '/auth/me', { responseType: 'text' as 'json', observe: 'response' as 'response' });
+    return this.http.get(this.baseUrl + '/auth/me', this.options);
   }
 
   logout() {
-    return this.http.post(this.baseUrl + '/auth/logout', {}, { withCredentials: true });
+    return this.http.post(this.baseUrl + '/auth/logout', {}, this.options);
   }
 
-  isAuthenticated(): boolean {
-    return false;
+  public isLoggedIn() {
+    return (new Date(Date.now()) < this.getExpiration()) ? true : false;
+  }
+
+  isLoggedOut() {
+    return !this.isLoggedIn();
   }
 
   getExpiration() {
-    //const expiration = localStorage.getItem("expires_at");
-    //const expiresAt = JSON.parse(expiration);
-    //return moment(expiresAt);
-  }
+    const expiration = new Date(this.cookieService.get('expiration'));
+    if (!expiration) {
+      return new Date(0);
+    }
+    return expiration;
+  } 
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
 
 import { AuthService } from '../../../services/auth/auth.service';
+import { AlertService } from 'src/app/services/layouts/alert.service';
 
 @Component({
   selector: 'login',
@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private fb:FormBuilder,
               private authService: AuthService,
+              private alertService: AlertService,
               private router: Router) {
 
     this.form = this.fb.group({
@@ -33,11 +34,9 @@ export class LoginComponent implements OnInit {
     if (val.email && val.password) {
       this.authService.login(val.email, val.password)
         .subscribe((res) => {
-          //console.log('logged successfully');
-          this.authService.currentUser().subscribe((ress) => {
-            console.log(ress.body);
-          },
-          erre => console.log(erre));
+          console.log(res.body);
+          this.alertService.success('Login avvenuto con successo');
+          this.router.navigateByUrl('/home');
         },
         err => this.loginErrorCatcher(err));
     }
@@ -51,10 +50,10 @@ export class LoginComponent implements OnInit {
 
     switch(err.status) {
       case 400:
-        alert('richiesta invalida');
+        this.alertService.error('richiesta invalida', false);
         break;
       case 401:
-        alert('credenziali errate');
+        this.alertService.error('credenziali errate', false);
         break;
     }
   }
